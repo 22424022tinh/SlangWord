@@ -8,7 +8,7 @@ package com.mycompany._slangword;
  *
  * @author khang
  */
-public class App {
+public class Main {
 
     public static void main(String[] args) {
         System.out.println("");
