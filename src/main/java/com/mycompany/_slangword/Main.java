@@ -11,6 +11,6 @@ package com.mycompany._slangword;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("");
+        new MenuFrame();
     }
 }
