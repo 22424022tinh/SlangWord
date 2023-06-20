@@ -1,37 +1,26 @@
-package com.mycompany.javalang;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
+package com.mycompany._slangword;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class HistoryFrame extends JFrame implements ActionListener {
 	JButton btnReturn, btnExit;
-	SlangWord slangWord = SlangWord.getInstance();
+	Slang slangWord = Slang.getInstance();
 
 	HistoryFrame() {
 		Container con = this.getContentPane();
-
-		// History
 		JLabel historyLabel = new JLabel();
-		historyLabel.setText("History Slagword Found");
+		historyLabel.setText("History Slangword Found");
 		historyLabel.setForeground(Color.green);
 		historyLabel.setFont(new Font("Gill Sans MT", Font.PLAIN, 35));
 		historyLabel.setAlignmentX(CENTER_ALIGNMENT);
-		// Table
+		
 		JPanel panelTable = new JPanel();
 		panelTable.setBackground(Color.black);
 
@@ -49,7 +38,7 @@ public class HistoryFrame extends JFrame implements ActionListener {
 		panelTable.setLayout(new GridLayout(1, 1));
 		panelTable.add(sp);
 
-		// 2 Button
+		
 		JPanel bottomPanel = new JPanel();
 		btnReturn = new JButton("Return");
 		btnExit = new JButton("Exit");
@@ -63,14 +52,26 @@ public class HistoryFrame extends JFrame implements ActionListener {
 		bottomPanel.add(btnReturn);
 		bottomPanel.add(btnExit);
 
+		JLabel jLabelObject = new JLabel();
+		jLabelObject.setFont(new Font("Gill Sans MT", Font.PLAIN, 35));
+		jLabelObject.setIcon(new ImageIcon("image/slanglingo.png"));
+		jLabelObject.setAlignmentX(CENTER_ALIGNMENT);
+
+		JPanel pan = new JPanel();
+		pan.setLayout(new FlowLayout(FlowLayout.CENTER));
+		pan.add(jLabelObject);
+		pan.add(historyLabel);
+		pan.add(jLabelObject);
+		pan.setAlignmentX(CENTER_ALIGNMENT);
+		pan.setBackground(Color.WHITE);
+
 		con.setLayout(new BoxLayout(con, BoxLayout.Y_AXIS));
-		con.add(historyLabel);
+		con.add(pan);
 		con.add(Box.createRigidArea(new Dimension(0, 50)));
 		con.add(panelTable);
 		con.add(Box.createRigidArea(new Dimension(0, 50)));
 		con.add(bottomPanel);
 
-		// Setting JFrame
 		this.setTitle("History Window");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
@@ -86,7 +87,11 @@ public class HistoryFrame extends JFrame implements ActionListener {
 			System.exit(0);
 		} else if (e.getSource() == btnReturn) {
 			this.dispose();
-			new MenuFrame();
+                    try {
+                        new MenuFrame();
+                    } catch (IOException ex) {
+                        Logger.getLogger(HistoryFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 		}
 	}
 

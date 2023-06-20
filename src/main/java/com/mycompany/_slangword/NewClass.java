@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.javalang;
+package com.mycompany._slangword;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -46,7 +46,7 @@ public class NewClass {
     private JPanel statusLabel;
     private JPanel controlPanel;
     String b1="b1", b2="b2", b3="b3", b4, b5, b6, b7, b8;
-    SlangWord slangWord;
+    Slang slangWord;
     public NewClass() {
         prepareGUI();
     }
@@ -159,9 +159,9 @@ public class NewClass {
 			try {
 		JButton btnBack;
                 JTable jt;
-                SlangWord slangWord;
+                Slang slangWord;
                 String dataCopy[][];
-		slangWord = SlangWord.getInstance();
+		slangWord = Slang.getInstance();
 
 		// Label
 		JLabel titleLabel = new JLabel();

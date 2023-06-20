@@ -1,15 +1,23 @@
-package com.mycompany.javalang;
+package com.mycompany._slangword;
 
 import java.awt.Color;
+import static java.awt.Component.CENTER_ALIGNMENT;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -26,13 +35,13 @@ import javax.swing.table.DefaultTableModel;
 public class DeleteFrame extends JFrame implements ActionListener, ListSelectionListener {
 	JButton btnBack;
 	JTable jt;
-	SlangWord slangWord;
+	Slang slangWord;
 	DefaultTableModel model;
 	String data[][];
-
+        
 	public DeleteFrame() throws Exception {
 		Container con = this.getContentPane();
-		slangWord = SlangWord.getInstance();
+		slangWord = Slang.getInstance();
 
 		// Label
 		JLabel titleLabel = new JLabel();
@@ -42,11 +51,17 @@ public class DeleteFrame extends JFrame implements ActionListener, ListSelection
 		titleLabel.setAlignmentX(CENTER_ALIGNMENT);
 		// titleLabel.setBackground(Color.black);
 		// titleLabel.setOpaque(true);
-
+                //
+                //
+                JLabel jLabelObject = new JLabel();
+                jLabelObject.setFont(new Font("Gill Sans MT", Font.PLAIN, 35));
+                jLabelObject.setIcon(new ImageIcon(new ImageIcon("image/duo200.png").getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT)));
+                jLabelObject.setAlignmentX(CENTER_ALIGNMENT);
+                jLabelObject.setPreferredSize(new Dimension(200, 150));
 		// Label
 		JLabel resultLabel = new JLabel();
 		resultLabel.setForeground(Color.black);
-		resultLabel.setFont(new Font("Gill Sans MT", Font.PLAIN, 18));
+		resultLabel.setFont(new Font("Gill Sans MT", Font.PLAIN, 35));
 		resultLabel.setAlignmentX(CENTER_ALIGNMENT);
 		// resultLabel.setBackground(Color.blue);
 		// resultLabel.setOpaque(true);
@@ -55,8 +70,9 @@ public class DeleteFrame extends JFrame implements ActionListener, ListSelection
 		JPanel panelTable = new JPanel();
 		panelTable.setBackground(Color.black);
 		data = slangWord.getData();
-		String column[] = { "STT", "Slag", "Meaning" };
-		resultLabel.setText("We have " + data.length + " slang words");
+		String column[] = { "STT", "Key", "Meaning" };
+		resultLabel.setText("Sanglingo "+data.length+" slang words");
+                resultLabel.setFont(new Font("Gill Sans MT", Font.PLAIN, 35));
 		jt = new JTable(new DefaultTableModel(column, 0));
 		model = (DefaultTableModel) jt.getModel();
 		jt.setRowHeight(30);
@@ -73,6 +89,8 @@ public class DeleteFrame extends JFrame implements ActionListener, ListSelection
 		panelTable.setLayout(new BoxLayout(panelTable, BoxLayout.X_AXIS));
 		panelTable.add(sp);
 
+                //
+                
 		// Button Back
 		JPanel bottomPanel = new JPanel();
 		btnBack = new JButton("Back ");
@@ -81,11 +99,18 @@ public class DeleteFrame extends JFrame implements ActionListener, ListSelection
 		btnBack.setAlignmentX(CENTER_ALIGNMENT);
 		bottomPanel.add(btnBack);
 
+                //
+                JPanel pan=new JPanel();
+                pan.setLayout(new FlowLayout(FlowLayout.CENTER));
+                pan.add(jLabelObject);
+                pan.add(titleLabel);
+                pan.setAlignmentX(CENTER_ALIGNMENT);
+                pan.setBackground(Color.WHITE);
 		// Add to con
 		con.setLayout(new BoxLayout(con, BoxLayout.Y_AXIS));
-		con.add(Box.createRigidArea(new Dimension(0, 10)));
-		con.add(titleLabel);
-		con.add(Box.createRigidArea(new Dimension(0, 20)));
+		
+		con.add(pan);
+		
 		con.add(resultLabel);
 		con.add(Box.createRigidArea(new Dimension(0, 20)));
 		con.add(panelTable);
@@ -106,7 +131,11 @@ public class DeleteFrame extends JFrame implements ActionListener, ListSelection
 		// TODO Auto-generated method stub
 		if (e.getSource() == btnBack) {
 			this.dispose();
-			new MenuFrame();
+                    try {
+                        new MenuFrame();
+                    } catch (IOException ex) {
+                        Logger.getLogger(DeleteFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 		}
 	}
 
@@ -128,13 +157,18 @@ public class DeleteFrame extends JFrame implements ActionListener, ListSelection
 		String Data = (String) jt.getValueAt(row, 1);
 
 		System.out.println("Table element selected is: " + Data);
-		int n = JOptionPane.showConfirmDialog(this, "Would you like to delete this slang word?", "An Inane Question",
-				JOptionPane.YES_NO_OPTION);
+                UIManager.put("OptionPane.background", Color.WHITE);
+                UIManager.put("OptionPane.messagebackground", Color.WHITE);
+                UIManager.put("Panel.background", Color.WHITE);
+                Icon icon=new ImageIcon(new ImageIcon("image/mark.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+		int n = JOptionPane.showConfirmDialog(this, "Would you like to delete this slang word?", "Select an option",
+				JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE,icon);
+                
 		if (n == 0) {
 			slangWord.delete(Data, (String) jt.getValueAt(row, 2));
 			// default title and icon
 			model.removeRow(row);
-			JOptionPane.showMessageDialog(this, "Deleted success");
+			JOptionPane.showMessageDialog(this, "Deleted success","",JOptionPane.YES_NO_OPTION,icon);
 
 		}
 	}
